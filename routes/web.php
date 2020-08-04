@@ -19,3 +19,7 @@ Route::get('/', function () {
 
 // Google map related routes
 Route::get('map/display', 'MapController@display_map');
+Route::get('map/client/location', 'MapController@client_location');
+Route::get('map/display/markers', 'MapController@display_markers');
+
+Route::get('map/api/points/all', 'MapController@get_all_points');
