@@ -21,23 +21,6 @@
             center: {lat: -34.397, lng: 150.644},
             zoom: 6
           });
-
-
-          
-
-          /*
-          var marker = new google.maps.Marker({
-            position: {lat: 37.601346, lng: 22.944505},
-            map: map,
-            title: 'Hello World!'
-          });
-          var infowindow = new google.maps.InfoWindow({
-            content: "Asklipiio"
-          });
-          marker.addListener('click', function() {
-            infowindow.open(map, marker);
-          });
-          */
         }
 
         // Try HTML5 geolocation.
@@ -68,7 +51,7 @@
 
       function loadMarkers() {
 
-        var xmlhttp = new XMLHttpRequest();
+          var xmlhttp = new XMLHttpRequest();
           var url = "http://localhost/soc2020/practice/public/map/api/points/all";
 
           xmlhttp.onreadystatechange = function() {
@@ -81,16 +64,8 @@
                     var marker = new google.maps.Marker({
                         position: myLatlng,
                         map: map,
-                        title: 'Hello World!'
                     });
-                    /*
-                    var infowindow = new google.maps.InfoWindow({
-                        content: json[i].description
-                    });
-                    marker.addListener('click', function() {
-                        infowindow.open(map, marker);
-                    });
-                    */
+                    
                     google.maps.event.addListener(marker, 'click', (function(marker, i) {
                         return function() {
                             var infowindow = new google.maps.InfoWindow();
