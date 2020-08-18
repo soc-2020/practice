@@ -16,6 +16,8 @@
     <script>
         // Initialize and add the map
         var map;
+        var markers = [];
+
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: -34.397, lng: 150.644},
@@ -58,6 +60,12 @@
       }
 
       function loadMarkers() {
+
+          for (let i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+          }
+          markers = [];
+          
           var bounds = map.getBounds();
           var ne = bounds.getNorthEast();
           var sw = bounds.getSouthWest();
@@ -81,6 +89,7 @@
                         position: myLatlng,
                         map: map,
                     });
+                    markers.push(marker);
                     
                     google.maps.event.addListener(marker, 'click', (function(marker, i) {
                         return function() {
