@@ -21,5 +21,11 @@ Route::get('/', function () {
 Route::get('map/display', 'MapController@display_map');
 Route::get('map/client/location', 'MapController@client_location');
 Route::get('map/display/markers', 'MapController@display_markers');
+Route::get('map/display/location/markers', 'MapController@display_location_markers');
 
 Route::get('map/api/points/all', 'MapController@get_all_points');
+Route::get('map/api/points/{ne_lat}/{ne_lng}/{sw_lat}/{sw_lng}', 'MapController@get_points');
+
+// Form related experiments
+Route::get('form/combo', 'FormController@combo');
+Route::post('form/combo/action', 'FormController@combo_action');

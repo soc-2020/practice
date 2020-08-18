@@ -25,8 +25,26 @@ class MapController extends Controller
         return View('maps.display_markers', $data);
     }
 
+    public function display_location_markers() {
+        $data['google_maps_api_key'] = env('GOOGLE_MAPS_API_KEY', '');
+
+        return View('maps.display_location_markers', $data);
+    }
+
     public function get_all_points() {
         $points = Point::select('id', 'description', 'lon', 'lat')->get();
+
+        return response()->json($points);
+    }
+
+    public function get_points($ne_lat, $ne_lng, $sw_lat, $sw_lng)
+    {
+        $points = Point::select('id', 'description', 'lon', 'lat')->
+        where('lon', '>', $sw_lng)->
+        where('lon', '<', $ne_lng)->
+        where('lat', '>', $sw_lat)->
+        where('lat', '<', $ne_lat)->
+        get();
 
         return response()->json($points);
     }
