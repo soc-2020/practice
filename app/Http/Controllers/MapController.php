@@ -48,4 +48,15 @@ class MapController extends Controller
 
         return response()->json($points);
     }
+
+    public function add_point(Request $request) 
+    {
+        $point = new Point();
+        $point->description = $request->get('description');
+        $point->lon = $request->get('lon');
+        $point->lat = $request->get('lat');
+        $point->save();
+
+        return redirect('map/display/location/markers');
+    }
 }

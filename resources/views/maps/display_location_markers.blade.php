@@ -13,43 +13,66 @@
     <h3>My Google Maps Demo</h3>
     <!--The div element for the map -->
     <div id="map"></div>
+
+    <div>
+      <form id="descr-form" method='post' action="{{ url('map/add/point') }}">
+        @csrf
+        Description: <input type='text' name="description"> 
+        Lon: <input id='lon-field' type='text' name="lon"> 
+        Lat: <input id='lat-field' type='text' name="lat"> 
+        <button type='submit'>Submit</button>
+      </form>
+    </div>
     <script>
         // Initialize and add the map
         var map;
         var markers = [];
+        var pos = {lat: -34.397, lng: 150.644};
 
         function initMap() {
-            map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: -34.397, lng: 150.644},
-            zoom: 6
-          });
-          google.maps.event.addListener(map, "dragend", function() {
-            var center = this.getCenter();
-            var latitude = center.lat();
-            var longitude = center.lng();
-            console.log("current latitude is: " + latitude);
-            console.log("current longitude is: " + longitude);
-            loadMarkers();
-          });
+          
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {  
+              pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+              };
+              map = new google.maps.Map(document.getElementById('map'), {
+                center: pos,
+                zoom: 6
+              });
+              console.log(pos);
+
+              google.maps.event.addListener(map, 'click', function(mapsMouseEvent) {
+                document.getElementById('lon-field').value = mapsMouseEvent.latLng.lng();
+                document.getElementById('lat-field').value = mapsMouseEvent.latLng.lat();
+              });
+
+              google.maps.event.addListener(map, "dragend", function() {
+                var center = this.getCenter();
+                var latitude = center.lat();
+                var longitude = center.lng();
+                console.log("current latitude is: " + latitude);
+                console.log("current longitude is: " + longitude);
+                loadMarkers();
+              });
+
+              loadMarkers();
+            }, function() {
+              handleLocationError(true, infoWindow, map.getCenter());
+            });
+          } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, infoWindow, map.getCenter());
+          }
+          
+          
+
+          
+          
         }
 
-        // Try HTML5 geolocation.
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
 
-            map.setCenter(pos);
-            loadMarkers();
-          }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
-          });
-        } else {
-          // Browser doesn't support Geolocation
-          handleLocationError(false, infoWindow, map.getCenter());
-        }
 
       function handleLocationError(browserHasGeolocation, infoWindow, pos) {
         infoWindow.setPosition(pos);
@@ -60,12 +83,13 @@
       }
 
       function loadMarkers() {
-
+        console.log(pos);
+          // Remove any existing markers
           for (let i = 0; i < markers.length; i++) {
             markers[i].setMap(null);
           }
           markers = [];
-          
+          console.log(map.getBounds());
           var bounds = map.getBounds();
           var ne = bounds.getNorthEast();
           var sw = bounds.getSouthWest();
