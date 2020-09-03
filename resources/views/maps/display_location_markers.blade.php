@@ -57,7 +57,11 @@
                 loadMarkers();
               });
 
-              loadMarkers();
+              google.maps.event.addListenerOnce(map, 'idle', function(){
+                  // do something only the first time the map is loaded
+                  loadMarkers();
+              });
+              
             }, function() {
               handleLocationError(true, infoWindow, map.getCenter());
             });
@@ -83,13 +87,12 @@
       }
 
       function loadMarkers() {
-        console.log(pos);
           // Remove any existing markers
           for (let i = 0; i < markers.length; i++) {
             markers[i].setMap(null);
           }
           markers = [];
-          console.log(map.getBounds());
+         
           var bounds = map.getBounds();
           var ne = bounds.getNorthEast();
           var sw = bounds.getSouthWest();

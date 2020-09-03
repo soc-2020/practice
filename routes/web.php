@@ -24,6 +24,10 @@ Route::get('map/display/markers', 'MapController@display_markers');
 Route::get('map/display/location/markers', 'MapController@display_location_markers');
 Route::post('map/add/point', 'MapController@add_point');
 
+Route::get('/points/list', 'PointsController@points_list');
+Route::get('/point/{id}', 'PointsController@point_form');
+Route::post('/point/update', 'PointsController@point_update');
+
 Route::get('map/api/points/all', 'MapController@get_all_points');
 Route::get('map/api/points/{ne_lat}/{ne_lng}/{sw_lat}/{sw_lng}', 'MapController@get_points');
 
